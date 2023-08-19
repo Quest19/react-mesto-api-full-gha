@@ -35,7 +35,7 @@ export const tokenCheck = (token) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${token}`,
         },
     }).then((res) => {
         if (res.ok) {

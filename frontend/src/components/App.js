@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import React, { useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
@@ -25,17 +26,12 @@ function App() {
     const [selectedCard, setSelectedCard] = React.useState(null);
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([]);
-
-    React.useEffect(() => {
-        Promise.all([api.getUserInfo(), api.getInitialCards()])
-            .then(([data, cards]) => {
-                setCurrentUser(data);
-                setCards(cards);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+    const [isLoggedIn, setLoggedIn] = React.useState(false);
+    const [headerEmail, setHeaderEmail] = React.useState(null);
+    const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] =
+        React.useState(false);
+    const [isSuccess, setSuccess] = React.useState(false);
+    const navigate = useNavigate();
 
     //Открытие попапа профиля
     function handleEditProfileClick() {
@@ -87,10 +83,22 @@ function App() {
         }
     }, [isOpen]);
 
+    React.useEffect(() => {
+      const token = localStorage.getItem("jwt");
+      if (token) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([user, cards]) => {
+          setCurrentUser(user);
+          setCards(cards);
+        })
+        .catch((err) => console.log(err));
+      }
+    }, [isLoggedIn]);
+
     //Лайк карточки
     function handleCardLike(card) {
         //Проверка на лайк
-        const isLiked = card.likes.some((i) => i._id === currentUser._id);
+        const isLiked = card.likes.some((id) => id === currentUser._id);
 
         if (!isLiked) {
             api.putLikeCard(card._id)
@@ -119,7 +127,7 @@ function App() {
     function handleCardDelete(card) {
         api.deleteCard(card._id)
             .then(() => {
-                setCards(prevCards => prevCards.filter((c) => c._id !== card._id));
+                setCards(cards.filter((c) => c._id !== card._id));
             })
             .catch((err) => {
                 console.log(err);
@@ -159,15 +167,6 @@ function App() {
             });
     }
 
-    //----------------------12 пр-------------------------
-
-    const [isLoggedIn, setLoggedIn] = React.useState(false);
-    const [headerEmail, setHeaderEmail] = React.useState(null);
-    const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] =
-        React.useState(false);
-    const [isSuccess, setSuccess] = React.useState(false);
-    const navigate = useNavigate();
-
     const handleLogin = () => {
         setLoggedIn(true);
     };
@@ -175,19 +174,20 @@ function App() {
     //Проверка токена
     function checkToken() {
         const jwt = localStorage.getItem("jwt");
-        Auth.tokenCheck(jwt)
-            .then((data) => {
-                if (!data) {
-                    return;
-                }
+        if (jwt) {
+          Auth.tokenCheck(jwt)
+          .then((data) => {
+              if (data) {
                 setLoggedIn(true);
-                setHeaderEmail(data.data.email);
+                setHeaderEmail(data.email);
                 navigate("/");
-            })
-            .catch((err) => {
-                console.log(err);
-                setHeaderEmail(null);
-            });
+              }
+          })
+          .catch((err) => {
+              console.log(err);
+              setHeaderEmail(null);
+          });
+        }
     }
 
     useEffect(() => {

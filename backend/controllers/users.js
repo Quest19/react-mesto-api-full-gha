@@ -10,7 +10,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const getAllUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
-      res.status(200).send({ data: users });
+      res.status(200).send(users);
     })
     .catch((err) => {
       next(err);
@@ -21,7 +21,7 @@ const getUser = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (user) {
-        res.status(200).send({ data: user });
+        res.status(200).send(user);
       } else {
         throw new NotFoundError('Пользователь не найден');
       }
@@ -40,7 +40,7 @@ const getActualUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.send({ data: user });
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -59,18 +59,12 @@ const createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
     .then((user) => {
-      const {
-        // eslint-disable-next-line no-shadow
-        _id, name, about, avatar, email,
-      } = user;
       res.status(200).send({
-        data: {
-          _id,
-          name,
-          about,
-          avatar,
-          email,
-        },
+        _id: user._id,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
       });
     })
     // eslint-disable-next-line consistent-return
@@ -105,7 +99,7 @@ const updateUser = (req, res, next) => {
   User.findByIdAndUpdate(owner, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (user) {
-        res.status(200).send({ data: user });
+        res.status(200).send(user);
       } else {
         throw new NotFoundError('Пользователь не найден');
       }
@@ -124,7 +118,7 @@ const updateAvatar = (req, res, next) => {
   User.findByIdAndUpdate(owner, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (user) {
-        res.status(200).send({ data: user });
+        res.status(200).send(user);
       } else {
         throw new NotFoundError('Пользователь не найден');
       }
