@@ -1,0 +1,8 @@
+.header__button {
+  padding: 0;
+  border: 0;
+  height: fit-content;
+  background-color: black;
+  cursor: pointer;
+  margin: 0;
+}

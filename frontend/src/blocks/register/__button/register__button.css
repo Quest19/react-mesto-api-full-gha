@@ -1,0 +1,24 @@
+.register__button {
+  width: 358px;
+  height: 50px;
+  font-size: 18px;
+  line-height: 21.78px;
+  font-weight: 400;
+  margin-top: 186px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: 0.5s linear;
+  border: none;
+  border-radius: 2px;
+}
+
+
+.register__button:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 580px) {
+  .register__button {
+    width: 100%;
+  }
+}

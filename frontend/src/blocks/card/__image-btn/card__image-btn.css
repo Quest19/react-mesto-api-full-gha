@@ -1,0 +1,8 @@
+.card__image-btn {
+  padding: 0;
+  margin: 0;
+  border: none;
+  width: 282px;
+  height: 282px;
+  cursor: pointer;
+}

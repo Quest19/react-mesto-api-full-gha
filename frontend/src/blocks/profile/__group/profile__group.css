@@ -1,0 +1,18 @@
+.profile__group {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 3px;
+}
+
+@media screen and (max-width: 720px) {
+  .profile__group {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 345px) {  
+  .profile__group {
+    gap: 10px;
+  }
+}
