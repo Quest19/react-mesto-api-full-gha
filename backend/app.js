@@ -21,7 +21,7 @@ const app = express();
 
 mongoose.connect(DB_ADDRESS);
 
-app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
+app.use(cors({ origin: ['http://localhost:3000', 'http://quest19.nomoreparties.co'], credentials: true }));
 
 app.use(bodyParser.json());
 
