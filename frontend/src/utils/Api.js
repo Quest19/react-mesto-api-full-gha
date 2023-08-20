@@ -113,7 +113,7 @@ export class Api {
 }
 
 const api = new Api({
-  url: "http://localhost:3000",
+  url: "http://api.quest19.nomoreparties.co",
 });
 
 export default api;
