@@ -5,7 +5,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.7.190
+IP <158.160.7.190> 
 
 Frontend https://quest19.nomoreparties.co
 
